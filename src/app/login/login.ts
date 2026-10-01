@@ -21,15 +21,16 @@ export class Login {
   ) {}
 
   login() {
-    if (!this.email || !this.password) {
-  alert('Please enter email and password');
-  return;
-}
 
-if (!this.email.includes('@')) {
-  alert('Please enter a valid email');
-  return;
-}
+    if (!this.email || !this.password) {
+      alert('Please enter email and password');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+      alert('Please enter a valid email');
+      return;
+    }
 
     const loginData = {
       email: this.email,

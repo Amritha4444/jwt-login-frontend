@@ -1,59 +1,212 @@
-# Frontend
+# JWT Login System - Angular Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
+This project is the Angular frontend for a full-stack JWT Login System. It provides a Login page, communicates with the Node.js backend, stores the JWT token, protects the Dashboard route, and provides logout functionality.
 
-## Development server
+## Technologies Used
 
-To start a local development server, run:
+- Angular
+- TypeScript
+- HTML
+- CSS
+- Angular Router
+- HttpClient
+- JWT Authentication
 
-```bash
+## Features
+
+- User Login
+- Email and Password validation
+- Login API integration
+- JWT token storage
+- Protected Dashboard
+- Angular Route Guard
+- Logout functionality
+- Automatic redirection to Login when the user is not authenticated
+
+## Project Structure
+
+```text
+frontend
+│
+├── src
+│   └── app
+│       ├── login
+│       │   ├── login.ts
+│       │   ├── login.html
+│       │   └── login.css
+│       │
+│       ├── dashboard
+│       │   ├── dashboard.ts
+│       │   ├── dashboard.html
+│       │   └── dashboard.css
+│       │
+│       ├── auth.guard.ts
+│       ├── app.routes.ts
+│       ├── app.config.ts
+│       ├── app.html
+│       └── app.ts
+│
+├── package.json
+├── package-lock.json
+└── .gitignore
+
+## Backend Connection
+
+The Angular application communicates with the Node.js backend.
+
+Backend URL:
+
+http://localhost:3000
+
+Login API:
+
+POST http://localhost:3000/api/login
+
+Protected Dashboard API:
+
+GET http://localhost:3000/api/dashboard
+
+## Login Flow
+
+1. The user opens the Login page.
+
+
+2. The user enters an email and password.
+
+
+3. Angular validates the input.
+
+
+4. Angular sends the login details to the backend.
+
+
+5. The backend validates the credentials using the SQLite database.
+
+
+6. The backend generates a JWT token after successful authentication.
+
+
+7. Angular receives the token.
+
+
+8. The token is stored in browser local storage.
+
+
+9. The user is redirected to the Dashboard.
+
+
+10. The JWT token is sent when accessing the protected Dashboard API.
+
+
+
+## Route Protection
+
+The Dashboard route is protected using an Angular route guard.
+
+The guard checks whether a JWT token exists in local storage.
+
+If a token exists:
+
+Access Dashboard
+
+If a token does not exist:
+
+Redirect to Login
+
+Dashboard route:
+
+/dashboard
+
+## Logout
+
+When the user clicks the Logout button:
+
+1. The JWT token is removed from local storage.
+
+
+2. The user is redirected to the Login page.
+
+
+3. The protected Dashboard cannot be accessed without authentication.
+
+
+
+## Installation
+
+Make sure Node.js and Angular CLI are installed.
+
+Open a terminal inside the frontend folder.
+
+Install the required packages:
+
+npm install
+
+Run the Application
+
+Start the Angular development server:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The application will normally run at:
 
-## Code scaffolding
+http://localhost:4200
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Open the Login page:
 
-```bash
-ng generate component component-name
-```
+http://localhost:4200/login
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Backend Requirement
 
-```bash
-ng generate --help
-```
+The Node.js backend must also be running for login and Dashboard API requests to work.
 
-## Building
+Start the backend from the backend folder:
 
-To build the project run:
+node server.js
 
-```bash
-ng build
-```
+The backend runs at:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+http://localhost:3000
 
-## Running unit tests
+Testing
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Valid Login
 
-```bash
-ng test
-```
+Use the demo credentials provided in the backend README.
 
-## Running end-to-end tests
+Expected result:
 
-For end-to-end (e2e) testing, run:
+Login → JWT Token → Dashboard
 
-```bash
-ng e2e
-```
+Invalid Login
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Enter an incorrect email or password.
 
-## Additional Resources
+Expected result:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Invalid email or password
+
+Protected Route
+
+Log out and try to open:
+
+http://localhost:4200/dashboard
+
+Expected result:
+
+Redirect to Login
+
+Logout
+
+Click Logout from the Dashboard.
+
+Expected result:
+
+Logout → Login page
+
+Important Note
+
+This frontend is developed as part of a training/demo JWT authentication project.
+
+For a production application, additional security measures such as secure token handling, HTTPS, password hashing, environment variables, and appropriate authentication practices should be implemented.
+
+*Paste → Ctrl+S.* Then we can do the final GitHub update.
