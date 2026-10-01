@@ -1,7 +1,48 @@
-<h2>Dashboard</h2>
+<div class="dashboard-page">
 
-<h3>{{ message }} 
-    
-</h3>
+  <header class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>JWT Authentication Dashboard</p>
+    </div>
 
-<button (click)="logout()">Logout</button>
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+  </header>
+
+  <main class="dashboard-content">
+
+    <div class="welcome-card">
+      <div class="welcome-icon">👋</div>
+      <div>
+        <h2>Welcome Back!</h2>
+        <p>You have successfully logged in using JWT authentication.</p>
+      </div>
+    </div>
+
+    <div class="info-grid">
+
+      <div class="info-card">
+        <span class="card-icon">🔐</span>
+        <h3>Authentication</h3>
+        <p>JWT authentication is active.</p>
+      </div>
+
+      <div class="info-card">
+        <span class="card-icon">🛡️</span>
+        <h3>Protected Route</h3>
+        <p>This dashboard is protected by JWT authorization.</p>
+      </div>
+
+      <div class="info-card">
+        <span class="card-icon">✅</span>
+        <h3>Login Status</h3>
+        <p>You are successfully authenticated.</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

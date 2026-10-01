@@ -1,4 +1,4 @@
-.login-page {
+.signup-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -7,7 +7,7 @@
   font-family: Arial, sans-serif;
 }
 
-.login-card {
+.signup-card {
   width: 380px;
   background: white;
   padding: 40px;
@@ -15,7 +15,7 @@
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
-.login-header {
+.signup-header {
   text-align: center;
   margin-bottom: 30px;
 }
@@ -25,16 +25,15 @@
   margin-bottom: 10px;
 }
 
-.login-header h1 {
+.signup-header h1 {
   margin: 0;
   font-size: 28px;
   color: #1e293b;
 }
 
-.login-header p {
+.signup-header p {
   margin-top: 8px;
   color: #64748b;
-  font-size: 14px;
 }
 
 .form-group {
@@ -44,7 +43,6 @@
 .form-group label {
   display: block;
   margin-bottom: 7px;
-  font-size: 14px;
   font-weight: 600;
   color: #334155;
 }
@@ -52,19 +50,13 @@
 .form-group input {
   width: 100%;
   box-sizing: border-box;
-  padding: 13px 14px;
+  padding: 13px;
   border: 1px solid #cbd5e1;
   border-radius: 9px;
   font-size: 15px;
-  outline: none;
 }
 
-.form-group input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-}
-
-.login-btn {
+.signup-btn {
   width: 100%;
   padding: 13px;
   border: none;
@@ -74,16 +66,21 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.login-btn:hover {
+.signup-btn:hover {
   background: #4338ca;
 }
 
-.demo-text {
+.login-link {
   text-align: center;
   margin-top: 22px;
-  font-size: 12px;
   color: #64748b;
+}
+
+.login-link a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
 }
