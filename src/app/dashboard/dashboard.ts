@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,19 +14,16 @@ export class Dashboard implements OnInit {
 
   message = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
     this.http.get<any>(
-      'http://localhost:3000/api/dashboard',
-      { headers }
+      'http://localhost:3000/api/dashboard'
     ).subscribe({
       next: (response) => {
         console.log('Dashboard response:', response);
@@ -33,11 +32,12 @@ export class Dashboard implements OnInit {
 
       error: (error) => {
         console.log('Dashboard error:', error);
-        this.message = 'Access denied';
+        this.authService.logout();
       }
     });
   }
 
   logout() {
-    localStorage.removeItem('token');
-    window.location.href = '/login';}}
+    this.authService.logout();
+  }
+}

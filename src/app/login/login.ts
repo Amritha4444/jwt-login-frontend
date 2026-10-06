@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,44 +16,46 @@ export class Login {
   password = '';
 
   constructor(
-    private http: HttpClient,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   login() {
 
-    if (!this.email || !this.password) {
+    const email = this.email.trim();
+    const password = this.password;
+
+    if (!email || !password) {
       alert('Please enter email and password');
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
-      alert('Please enter a valid email');
-      return;
-    }
+    this.authService.login(email, password).subscribe({
 
-    const loginData = {
-      email: this.email,
-      password: this.password
-    };
-
-    this.http.post<any>(
-      'http://localhost:3000/api/login',
-      loginData
-    ).subscribe({
       next: (response) => {
+        console.log('Login response:', response);
 
-        alert('Login successful!');
+        this.authService.saveToken(response.token);
 
-        localStorage.setItem('token', response.token);
+        alert('Login successful');
 
         this.router.navigate(['/dashboard']);
       },
 
       error: (error) => {
-        console.log('Login failed:', error);
-        alert('Invalid email or password');
+        console.log('Login error:', error);
+
+        if (error.status === 401) {
+          alert('Invalid email or password');
+        } 
+        else if (error.status === 404) {
+          alert('Login API not found. Check backend server.');
+        } 
+        else {
+          alert('Login failed. Please try again.');
+        }
       }
+
     });
   }
 }
