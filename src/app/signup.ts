@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -115,29 +115,26 @@ export class Signup {
   password = '';
 
   constructor(
-    private http: HttpClient,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   signup() {
 
-    if (!this.email || !this.password) {
+    const email = this.email.trim();
+    const password = this.password;
+
+    if (!email || !password) {
       alert('Please enter email and password');
       return;
     }
 
-    this.http.post(
-      'http://localhost:3000/api/signup',
-      {
-        email: this.email,
-        password: this.password
-      }
-    ).subscribe({
-      next: (response: any) => {
+    this.authService.signup(email, password).subscribe({
+      next: (response:any) => {
         alert(response.message || 'Account created successfully');
         this.router.navigate(['/login']);
       },
-      error: (error) => {
+      error: (error:any) => {
         alert(error.error?.message || 'Signup failed');
       }
     });

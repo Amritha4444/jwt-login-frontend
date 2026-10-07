@@ -16,21 +16,27 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<any>(
-      `${this.apiUrl}/login`,
+      '${this.apiUrl}/auth/login',
       {
-        email: email,
-        password: password
+        email,
+        password
       }
     );
   }
 
   signup(email: string, password: string) {
     return this.http.post<any>(
-      `${this.apiUrl}/signup`,
+      '${this.apiUrl}/auth/signup',
       {
-        email: email,
-        password: password
+        email,
+        password
       }
+    );
+  }
+
+  getMe() {
+    return this.http.get<any>(
+      '${this.apiUrl}/auth/me'
     );
   }
 
@@ -38,7 +44,7 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 

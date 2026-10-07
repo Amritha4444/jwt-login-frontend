@@ -11,7 +11,6 @@ import { AuthService } from '../auth.service';
   styleUrl: './login.css'
 })
 export class Login {
-
   email = '';
   password = '';
 
@@ -21,7 +20,6 @@ export class Login {
   ) {}
 
   login() {
-
     const email = this.email.trim();
     const password = this.password;
 
@@ -31,31 +29,26 @@ export class Login {
     }
 
     this.authService.login(email, password).subscribe({
-
       next: (response) => {
         console.log('Login response:', response);
 
-        this.authService.saveToken(response.token);
+        // Backend returns token inside data
+        this.authService.saveToken(response.data.token);
 
         alert('Login successful');
-
         this.router.navigate(['/dashboard']);
       },
-
       error: (error) => {
         console.log('Login error:', error);
 
         if (error.status === 401) {
           alert('Invalid email or password');
-        } 
-        else if (error.status === 404) {
+        } else if (error.status === 404) {
           alert('Login API not found. Check backend server.');
-        } 
-        else {
+        } else {
           alert('Login failed. Please try again.');
         }
       }
-
     });
   }
 }

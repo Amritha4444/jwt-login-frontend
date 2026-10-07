@@ -5,7 +5,7 @@ import { Router, Routes } from '@angular/router';
 
 import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
-import { authGuard } from './auth-guard';
+import { authGuard } from './auth.guard';
 
 @Component({
   selector: 'app-signup-page',
