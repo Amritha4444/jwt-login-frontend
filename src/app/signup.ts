@@ -52,13 +52,21 @@ export class Signup {
     private router: Router
   ) {}
 
-  signup() {
-    if (!this.email || !this.password) {
+  signup(): void {
+    const email = this.email.trim();
+    const password = this.password;
+
+    if (!email || !password.trim()) {
       alert('Please enter email and password');
       return;
     }
 
-    this.authService.signup(this.email.trim(), this.password).subscribe({
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    this.authService.signup(email, password).subscribe({
       next: (response: any) => {
         alert(response.message || 'Signup successful');
         this.router.navigate(['/login']);
@@ -69,7 +77,7 @@ export class Signup {
     });
   }
 
-  goToLogin() {
+  goToLogin(): void {
     this.router.navigate(['/login']);
   }
 }
