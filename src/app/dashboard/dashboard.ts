@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { AuthService } from '../auth.service';
 import { environment } from '../../environment';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
   message = '';
   email = '';
@@ -22,8 +22,7 @@ export class Dashboard {
     private router: Router
   ) {}
 
-  ngOnInit() {
-
+  ngOnInit(): void {
     const token = this.authService.getToken();
 
     if (!token) {
@@ -31,34 +30,18 @@ export class Dashboard {
       return;
     }
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    this.http.get<any>(
-      `${environment.apiUrl}/auth/me`,
-      { headers }
-    ).subscribe({
-
+    this.http.get<any>(`${environment.apiUrl}/auth/me`).subscribe({
       next: (response) => {
-        console.log('Dashboard response:', response);
-
         this.message = response.message;
-
-        if (response.data && response.data.user) {
-          this.email = response.data.user.email;
-        }
+        this.email = response.data?.user?.email || '';
       },
-
-      error: (error) => {
-        console.log('Dashboard error:', error);
+      error: () => {
         this.authService.logout();
       }
-
     });
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
   }
 }
