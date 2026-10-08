@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-private apiUrl = `${environment.apiUrl}/auth`;
+
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(
     private http: HttpClient,
@@ -26,6 +27,10 @@ private apiUrl = `${environment.apiUrl}/auth`;
       `${this.apiUrl}/signup`,
       { email, password }
     );
+  }
+
+  getMe() {
+    return this.http.get<any>(`${this.apiUrl}/me`);
   }
 
   saveToken(token: string) {

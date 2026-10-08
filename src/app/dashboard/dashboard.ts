@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { environment } from '../../environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +15,6 @@ export class Dashboard implements OnInit {
   email = '';
 
   constructor(
-    private http: HttpClient,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -30,7 +27,7 @@ export class Dashboard implements OnInit {
       return;
     }
 
-    this.http.get<any>(`${environment.apiUrl}/auth/me`).subscribe({
+    this.authService.getMe().subscribe({
       next: (response) => {
         this.message = response.message;
         this.email = response.data?.user?.email || '';
