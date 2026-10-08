@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://localhost:3000/api/auth';
 
   constructor(
     private http: HttpClient,
@@ -16,27 +16,15 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<any>(
-      '${this.apiUrl}/auth/login',
-      {
-        email,
-        password
-      }
+      `${this.apiUrl}/login`,
+      { email, password }
     );
   }
 
   signup(email: string, password: string) {
     return this.http.post<any>(
-      '${this.apiUrl}/auth/signup',
-      {
-        email,
-        password
-      }
-    );
-  }
-
-  getMe() {
-    return this.http.get<any>(
-      '${this.apiUrl}/auth/me'
+      `${this.apiUrl}/signup`,
+      { email, password }
     );
   }
 

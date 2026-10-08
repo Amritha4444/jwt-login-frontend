@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -9,28 +10,50 @@ import { AuthService } from '../auth.service';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
 
   message = '';
   email = '';
 
   constructor(
+    private http: HttpClient,
     private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.authService.getMe().subscribe({
+
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.get<any>(
+      'http://localhost:3000/api/auth/me',
+      { headers }
+    ).subscribe({
+
       next: (response) => {
-        console.log('User response:', response);
+        console.log('Dashboard response:', response);
 
         this.message = response.message;
-        this.email = response.data.user.email;
+
+        if (response.data && response.data.user) {
+          this.email = response.data.user.email;
+        }
       },
+
       error: (error) => {
         console.log('Dashboard error:', error);
         this.authService.logout();
       }
+
     });
   }
 

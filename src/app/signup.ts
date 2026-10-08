@@ -8,106 +8,39 @@ import { AuthService } from './auth.service';
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div class="signup-page">
+    <div style="max-width:400px;margin:100px auto;font-family:Arial">
 
-      <div class="signup-card">
+      <h1>Create Account</h1>
 
-        <h1>Create Account</h1>
-        <p>Sign up to continue</p>
+      <input
+        type="email"
+        [(ngModel)]="email"
+        placeholder="Email"
+        style="width:100%;padding:12px;margin:10px 0"
+      >
 
-        <label>Email</label>
-        <input
-          type="email"
-          [(ngModel)]="email"
-          placeholder="Enter email"
-        >
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+        style="width:100%;padding:12px;margin:10px 0"
+      >
 
-        <label>Password</label>
-        <input
-          type="password"
-          [(ngModel)]="password"
-          placeholder="Enter password"
-        >
+      <button
+        type="button"
+        (click)="signup()"
+        style="width:100%;padding:12px;margin-top:10px"
+      >
+        Sign Up
+      </button>
 
-        <button type="button" (click)="signup()">
-          Sign Up
-        </button>
-
-        <p>
-          Already have an account?
-          <a href="/login">Login</a>
-        </p>
-
-      </div>
+      <p>
+        Already have an account?
+        <button type="button" (click)="goToLogin()">Login</button>
+      </p>
 
     </div>
-  `,
-  styles: [`
-    .signup-page {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f5f7ff;
-      font-family: Arial, sans-serif;
-    }
-
-    .signup-card {
-      width: 380px;
-      padding: 35px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .signup-card > p {
-      text-align: center;
-      color: #666;
-    }
-
-    label {
-      display: block;
-      margin-top: 18px;
-      margin-bottom: 7px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 25px;
-      border: none;
-      border-radius: 7px;
-      background: #4f46e5;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #4338ca;
-    }
-
-    a {
-      color: #4f46e5;
-      cursor: pointer;
-    }
-  `]
+  `
 })
 export class Signup {
 
@@ -120,23 +53,23 @@ export class Signup {
   ) {}
 
   signup() {
-
-    const email = this.email.trim();
-    const password = this.password;
-
-    if (!email || !password) {
+    if (!this.email || !this.password) {
       alert('Please enter email and password');
       return;
     }
 
-    this.authService.signup(email, password).subscribe({
-      next: (response:any) => {
-        alert(response.message || 'Account created successfully');
+    this.authService.signup(this.email.trim(), this.password).subscribe({
+      next: (response: any) => {
+        alert(response.message || 'Signup successful');
         this.router.navigate(['/login']);
       },
-      error: (error:any) => {
+      error: (error: any) => {
         alert(error.error?.message || 'Signup failed');
       }
     });
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }
