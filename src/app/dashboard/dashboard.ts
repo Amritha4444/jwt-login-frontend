@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { environment } from '../../environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +36,7 @@ export class Dashboard {
     });
 
     this.http.get<any>(
-      'http://localhost:3000/api/auth/me',
+      `${environment.apiUrl}/auth/me`,
       { headers }
     ).subscribe({
 
