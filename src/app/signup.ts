@@ -42,6 +42,7 @@ const commonTypoDomains = [
   'gm.com'
 ];
 
+
 if (commonTypoDomains.some(domain => email.endsWith('@' + domain))) {
   this.errorMessage = 'Please check your email. Did you mean @gmail.com?';
   return;
