@@ -38,7 +38,8 @@ const commonTypoDomains = [
   'gmal.com',
   'gmai.com',
   'gmail.con',
-  'gamil.com'
+  'gamil.com',
+  'gm.com'
 ];
 
 if (commonTypoDomains.some(domain => email.endsWith('@' + domain))) {
