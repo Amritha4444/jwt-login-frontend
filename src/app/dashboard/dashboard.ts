@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../auth.service';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements OnInit {
+export class DashboardComponent implements OnInit {
 
   message = '';
   email = '';
