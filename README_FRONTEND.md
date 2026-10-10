@@ -28,36 +28,33 @@ This project is the Angular frontend for a full-stack JWT authentication system.
 
 ## Project Structure
 
-text
-frontend
-│
-├── src
-│   ├── app
-│   │   ├── login
-│   │   │   ├── login.ts
-│   │   │   ├── login.html
-│   │   │   └── login.css
-│   │   │
-│   │   ├── dashboard
-│   │   │   ├── dashboard.ts
-│   │   │   ├── dashboard.html
-│   │   │   └── dashboard.css
-│   │   │
-│   │   ├── auth.service.ts
-│   │   ├── auth.interceptor.ts
-│   │   ├── auth.guard.ts
+
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   └── auth/
+│   │   │       ├── auth.service.ts
+│   │   │       ├── auth.guard.ts
+│   │   │       ├── auth.interceptor.ts
+│   │   │       └── auth-guard.spec.ts
+│   │   ├── login/
+│   │   ├── dashboard/
 │   │   ├── signup.ts
+│   │   ├── signup.html
+│   │   ├── signup.css
 │   │   ├── app.routes.ts
 │   │   ├── app.config.ts
 │   │   ├── app.ts
 │   │   └── app.html
-│   │
-│   ├── environment.ts
+│   ├── environments/
+│   │   ├── environment.ts
+│   │   └── environment.prod.ts
 │   └── main.ts
-│
+├── angular.json
 ├── package.json
 ├── package-lock.json
-└── .gitignore
+└── README.md
 
 Backend Connection
 
