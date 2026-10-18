@@ -1,263 +1,122 @@
-JWT Login System — Angular Frontend
+JWT Authentication Frontend
 
-This project is the Angular frontend for a full-stack JWT authentication system. It provides Login, Signup, and Dashboard functionality and communicates with a Node.js, Express, TypeScript, and SQLite backend.
+An Angular frontend application for user authentication using JWT (JSON Web Tokens). It provides login, signup, protected dashboard access, and NgRx-based authentication state management.
+
+Features
+
+- User login and signup
+- Form validation
+- JWT-based authentication
+- NgRx Store for managing authentication state
+- NgRx Actions, Reducer, Selectors, and Effects
+- HTTP requests to the backend API
+- Authentication interceptor to attach the JWT token
+- Protected dashboard access
+- Logout functionality
+- Authentication state handling for login success and errors
 
 Technologies Used
 
 - Angular
 - TypeScript
+- NgRx Store
+- NgRx Effects
+- RxJS
 - HTML and CSS
-- Angular Router
-- HttpClient
-- JWT Authentication
-- HTTP Interceptors
-- Route Guards
-
-Features
-
-- User Login and Signup
-- Email and Password validation
-- Login and Signup API integration
-- JWT token storage
-- HTTP authentication interceptor
-- Protected Dashboard route
-- Angular Route Guard
-- Logout functionality
-- Automatic redirection to Login when authentication is required
+- Angular HttpClient
 
 Project Structure
 
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   │   └── auth/
-│   │   │       ├── auth.service.ts
-│   │   │       ├── auth.guard.ts
-│   │   │       └── auth.interceptor.ts
-│   │   ├── login/
-│   │   ├── dashboard/
-│   │   ├── signup.ts
-│   │   ├── signup.html
-│   │   ├── signup.css
-│   │   ├── app.routes.ts
-│   │   ├── app.config.ts
-│   │   ├── app.ts
-│   │   └── app.html
-│   ├── environments/
-│   │   ├── environment.ts
-│   │   └── environment.prod.ts
-│   └── main.ts
-├── angular.json
-├── package.json
-├── package-lock.json
-└── README.md
+src/
+└── app/
+    ├── core/
+    │   └── auth/
+    │       ├── auth.service.ts
+    │       ├── auth.interceptor.ts
+    │       ├── auth.guard.ts
+    │       └── store/
+    │           ├── auth.actions.ts
+    │           ├── auth.effects.ts
+    │           ├── auth.reducer.ts
+    │           └── auth.selectors.ts
+    ├── login/
+    ├── signup/
+    ├── dashboard/
+    ├── app.config.ts
+    └── app.routes.ts
 
-Note: The structure above is a reference. The actual files in the repository may differ.
+Prerequisites
 
-Backend Connection
+Install the following before running the application:
 
-The Angular application communicates with a Node.js and Express backend.
-
-Default backend URL:
-
-"http://localhost:3000"
-
-Authentication API base URL:
-
-"http://localhost:3000/api/auth"
-
-API Endpoints
-
-Method| Endpoint| Purpose
-POST| "/api/auth/login"| Authenticate a user
-POST| "/api/auth/signup"| Register a new user
-GET| "/api/auth/me"| Retrieve the authenticated user's details
-
-Backend API Configuration
-
-The frontend API URL is configured in the Angular environment file.
-
-Default development API URL:
-
-"http://localhost:3000/api"
-
-The backend port is configured using the "PORT" variable in the backend ".env" file. The frontend API URL must match the backend port.
-
-For example, if the backend uses "PORT=3000", the frontend should connect to "http://localhost:3000/api".
-
-If the backend port changes, update the frontend API URL accordingly.
-
-The backend ".env" file contains private configuration and must not be committed to GitHub. Use ".env.example" to document the required environment variables.
-
-Never put the real "JWT_SECRET" in the frontend.
-
-Login Flow
-
-1. The user opens the Login page.
-2. The user enters an email address and password.
-3. Angular validates the input.
-4. Angular sends the login request to the backend.
-5. The backend validates the credentials using SQLite.
-6. The backend verifies the password using bcrypt.
-7. The backend generates a JWT after successful authentication.
-8. Angular receives the authentication response.
-9. The JWT is stored in browser local storage.
-10. The user is redirected to the Dashboard.
-11. The HTTP interceptor attaches the JWT to protected API requests.
-
-Signup Flow
-
-1. The user opens the Signup page.
-2. The user enters an email address and password.
-3. Angular validates the input.
-4. Angular sends the signup request to the backend.
-5. The backend checks whether the email already exists.
-6. The password is hashed using bcrypt.
-7. The new user is stored in the SQLite database.
-8. After successful signup, the user is redirected to the Login page.
-
-Route Protection
-
-The Dashboard route is protected using an Angular route guard.
-
-Dashboard URL:
-
-"http://localhost:4200/dashboard"
-
-The guard checks whether an authentication token exists.
-
-- If a token exists, the guard allows navigation.
-- If a token does not exist, the guard redirects the user to Login.
-
-The backend also protects the "/api/auth/me" endpoint by validating the JWT. The frontend route guard does not replace backend authentication.
-
-JWT HTTP Interceptor
-
-The application uses an Angular HTTP interceptor to centralize authentication headers.
-
-The interceptor:
-
-1. Reads the JWT from local storage.
-2. Adds it to the "Authorization" header.
-3. Sends the request to the backend.
-
-Header format:
-
-Authorization: Bearer <JWT_TOKEN>
-
-This avoids manually adding the token in every component.
-
-Logout
-
-When the user clicks Logout:
-
-1. The JWT is removed from local storage.
-2. The user is redirected to Login.
-3. The protected Dashboard route redirects unauthenticated users to Login.
+- Node.js and npm
+- Angular CLI
+- The JWT authentication backend
 
 Installation
 
-Make sure Node.js and Angular CLI are installed.
+Clone the repository:
 
-Open a terminal inside the frontend folder and run:
+git clone https://github.com/Amritha4444/jwt-login-frontend.git
+
+Navigate to the project folder:
+
+cd jwt-login-frontend
+
+Install dependencies:
 
 npm install
 
-Running the Frontend
+Backend Configuration
+
+Ensure that the backend is running on "http://localhost:3000".
+
+Configure the API URL in the Angular environment file to match your backend:
+
+apiUrl: 'http://localhost:3000/api'
+
+The authentication service uses this URL to communicate with the backend.
+
+Run the Application
 
 Start the Angular development server:
 
-npm start
+npx ng serve
 
-The application normally runs at:
+Open the application in your browser:
 
 "http://localhost:4200"
 
-Open the Login page:
+NgRx Authentication Flow
 
-"http://localhost:4200/login"
+1. The user enters their email and password.
+2. The login component dispatches a login action.
+3. The NgRx Effect calls the backend API through the authentication service.
+4. On success, the token and user information are stored in the NgRx state.
+5. The JWT token is saved in browser local storage.
+6. The authentication interceptor attaches the token to protected API requests.
+7. The user can access the dashboard after successful authentication.
+8. On failure, the application updates the authentication error state.
+9. On logout, the token is removed and the user is redirected to the login page.
 
-Running the Backend
+Build
 
-Login, Signup, and Dashboard API requests require the backend to be running.
+To create a production build, run:
 
-Open a separate terminal inside the backend folder and run:
+npx ng build
 
-npm install
-npm run dev
-
-The backend normally runs at:
-
-"http://localhost:3000"
-
-Make sure the backend ".env" file is configured correctly before starting the server.
+The generated files are placed in the "dist/" directory.
 
 Testing
 
-Valid Login
+Run the Angular unit tests using:
 
-Use the demo credentials documented in the backend README, if the demo user is enabled.
+npx ng test
 
-Expected flow:
+Backend Repository
 
-Login
-  ↓
-Backend validates credentials
-  ↓
-JWT token returned
-  ↓
-Dashboard
+"JWT Authentication Backend" (https://github.com/Amritha4444/jwt-login-backend)
 
-Invalid Login
+Author
 
-Enter an incorrect email address or password.
-
-Expected result: an authentication error message, such as "Invalid email or password".
-
-Signup
-
-Enter a valid email address and password that meet the backend validation rules.
-
-Expected result: the account is created, and the user can proceed to Login.
-
-Protected Route
-
-Log out and try to open:
-
-"http://localhost:4200/dashboard"
-
-Expected result: redirect to Login.
-
-Logout
-
-Click Logout on the Dashboard.
-
-Expected result: the token is removed and the user is redirected to Login.
-
-Environment Configuration
-
-The frontend API URL is configured in the Angular environment file. Use the environment file path that actually exists in the project.
-
-Development API URL:
-
-"http://localhost:3000/api"
-
-The frontend API URL must match the backend host and port. Update it whenever the backend configuration changes.
-
-The real "JWT_SECRET" must remain on the backend and must never be stored in frontend code.
-
-Project Purpose
-
-This project was developed as part of an internship/training task to demonstrate:
-
-- Angular frontend development
-- Node.js and Express API integration
-- TypeScript
-- JWT authentication
-- Route protection
-- HTTP interceptors
-- SQLite database integration
-- Password hashing with bcrypt
-- Frontend and backend communication
-- Environment-based configuration
+Amritha
