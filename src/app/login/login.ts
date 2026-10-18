@@ -1,7 +1,21 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject
+} from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../core/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
+
+import * as AuthActions from '../core/auth/store/auth.actions';
+
+import {
+  selectAuthError,
+  selectAuthToken
+} from '../core/auth/store/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -10,65 +24,59 @@ import { AuthService } from '../core/auth/auth.service';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
+  private store = inject(Store);
+  private router = inject(Router);
+  private destroy$ = new Subject<void>();
 
   email = '';
   password = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  ngOnInit(): void {
+    // Navigate to dashboard after successful login
+    this.store
+      .select(selectAuthToken)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((token) => {
+        if (token) {
+          this.router.navigate(['/dashboard']);
+        }
+      });
 
-  login() {
+    // Display login errors
+    this.store
+      .select(selectAuthError)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((error) => {
+        if (error) {
+          alert(error);
+        }
+      });
+  }
 
+  login(): void {
     const email = this.email.trim();
     const password = this.password;
 
     if (!email || !password) {
-      alert('Please enter email and password');
+      alert('Please enter email and password.');
       return;
     }
 
-    this.authService.login(email, password).subscribe({
+    console.log('Login button clicked');
 
-      next: (response) => {
+    this.store.dispatch(
+      AuthActions.login({
+        email,
+        password
+      })
+    );
 
-        console.log('Login response:', response);
+    console.log('Login action dispatched');
+  }
 
-        // Save JWT token returned by TypeScript backend
-        if (response && response.data && response.data.token) {
-
-          this.authService.saveToken(response.data.token);
-
-          alert('Login successful');
-
-          // Go to dashboard
-          this.router.navigate(['/dashboard']);
-
-        } else {
-
-          console.error('Token not found in response');
-          alert('Login successful, but token was not received.');
-
-        }
-      },
-
-      error: (error) => {
-
-        console.log('Login error:', error);
-
-        if (error.status === 401) {
-          alert('Invalid email or password');
-
-        } else if (error.status === 404) {
-          alert('Login API not found. Check backend server.');
-
-        } else {
-          alert('Login failed. Please try again.');
-        }
-      }
-
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
